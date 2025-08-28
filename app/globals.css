@@ -1,0 +1,83 @@
+@import "tailwindcss";
+
+:root {
+  --radius: 16px;
+}
+
+html, body {
+  scroll-behavior: smooth;
+}
+
+/* Glassmorphism effect */
+.glass {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 8px 32px 0 rgba(31, 38, 135, 0.15),
+    inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+}
+
+/* Fix for gradient text - use pseudo-element approach */
+.gradient-text {
+  position: relative;
+  display: inline-block;
+}
+
+.gradient-text::before {
+  content: attr(data-text);
+  position: absolute;
+  background: linear-gradient(to right, #f97316, #2563eb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  z-index: 1;
+}
+
+.gradient-text span {
+  position: relative;
+  z-index: 2;
+  color: transparent; /* Make the actual text transparent */
+}
+
+/* Alternative simpler approach */
+.text-gradient-fixed {
+  background: linear-gradient(to right, #f97316, #2563eb);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  display: inline;
+  position: relative;
+  z-index: 20;
+}
+
+/* Ensure text elements have proper stacking context */
+.glass > * {
+  position: relative;
+  z-index: 1;
+}
+
+.glass h1, .glass h2, .glass h3, .glass h4, .glass h5, .glass h6,
+.glass p, .glass span {
+  position: relative;
+  z-index: 2;
+}
+
+/* Soft shadow for cards */
+.card-shadow {
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 
+              0 8px 10px -6px rgba(0, 0, 0, 0.05),
+              inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+}
+
+/* Subtle hover effect */
+.hover-lift {
+  transition: all 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+}
