@@ -3,12 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
-    "build": "next build",
-    "start": "next start",
-    "lint": "next lint || echo \"skip\"",
-    "export": "next build && next export"
-  },
+  "dev": "next dev",
+  "build": "next build",
+  "export": "next export",
+  "start": "next start"
+},
   "dependencies": {
     "autoprefixer": "latest",
     "framer-motion": "latest",
