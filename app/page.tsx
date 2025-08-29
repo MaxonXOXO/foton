@@ -7,6 +7,8 @@ import { Card, CardHeader, CardContent, CardFooter, CardTitle } from "@/componen
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Input } from "@/components/ui/input";
 import { ArrowRight, ChevronRight, Menu, X, Sparkles, Rocket, Star, Play, Mail, Phone, Instagram, Github, Globe } from "lucide-react";
+import Link from 'next/link';
+
 
 const Section = ({ children, className = "", id }: { children: React.ReactNode; className?: string; id?: string }) => (
   <section id={id} className={`w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 ${className}`}>{children}</section>
@@ -159,10 +161,22 @@ const Feature = ({ icon: Icon, title, desc }: { icon: any; title: string; desc: 
   const ref = useRef<HTMLDivElement | null>(null);
   const inView = useInView(ref, { margin: "-50px" });
   return (
-    <motion.div ref={ref} initial={{ opacity: 0, y: 20, scale: 0.98 }} animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}} transition={{ duration: 0.5 }}>
-      <Card className="rounded-3xl shadow-sm">
-        <CardHeader><CardTitle className="flex items-center gap-2 text-xl"><Icon className="h-5 w-5" /> {title}</CardTitle></CardHeader>
-        <CardContent className="text-gray-600">{desc}</CardContent>
+    <motion.div 
+      ref={ref} 
+      initial={{ opacity: 0, y: 20, scale: 0.70 }} 
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}} 
+      transition={{ duration: 0.5 }} 
+      className="h-full flex"
+    >
+      <Card className="rounded-3xl shadow-sm h-full flex flex-col min-h-[23 0px] w-full"> {/* Added w-full and increased min-height */}
+        <CardHeader className="flex-shrink-0"> {/* Prevent header from growing */}
+          <CardTitle className="flex items-center gap-2 text-xl">
+            <Icon className="h-5 w-5" /> {title}
+          </CardTitle>
+        </CardHeader>
+        <CardContent className="text-gray-600 flex-grow flex flex-col">
+          <p className="flex-grow">{desc}</p>
+        </CardContent>
       </Card>
     </motion.div>
   );
@@ -197,28 +211,39 @@ const ScribbleUnderline = () => (
   </motion.svg>
 );
 
-const ProjectCard = ({ title, tag, i }: { title: string; tag: string; i: number }) => (
-  <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.06 }} className="group rounded-3xl overflow-hidden glass hover-lift">
-    <div className="aspect-[16/10] bg-gradient-to-br from-orange-100/30 to-blue-100/30" />
-    <div className="p-5 flex items-center justify-between">
-      <div>
-        <h3 className="font-semibold text-lg">{title}</h3>
-        <p className="text-sm text-gray-600">{tag}</p>
+const ProjectCard = ({ title, tag, i, id }: { title: string; tag: string; i: number; id: string }) => (
+  <motion.div 
+    initial={{ opacity: 0, y: 20 }} 
+    whileInView={{ opacity: 1, y: 0 }} 
+    viewport={{ once: true }} 
+    transition={{ delay: i * 0.06 }} 
+    className="group rounded-3xl overflow-hidden glass hover-lift"
+  >
+    <Link href={`/project/${id}`}>
+      <div className="aspect-[16/10] bg-gradient-to-br from-orange-100/30 to-blue-100/30" />
+      <div className="p-5 flex items-center justify-between">
+        <div>
+          <h3 className="font-semibold text-lg">{title}</h3>
+          <p className="text-sm text-gray-600">{tag}</p>
+        </div>
+        <motion.div whileHover={{ x: 6 }}>
+          <ArrowRight className="h-5 w-5" />
+        </motion.div>
       </div>
-      <motion.div whileHover={{ x: 6 }}><ArrowRight className="h-5 w-5" /></motion.div>
-    </div>
+    </Link>
   </motion.div>
 );
 
 const Work = () => {
   const projects = [
-    { title: "Product Microsite", tag: "Launch page" },
-    { title: "Portfolio", tag: "Case studies" },
-    { title: "SaaS Landing", tag: "Conversion focused" },
-    { title: "Mobile App Site", tag: "Feature highlights" },
-    { title: "Agency Site", tag: "Services + blog" },
-    { title: "Docs", tag: "Knowledge base" },
+    { id: "product-microsite", title: "Product Microsite", tag: "Launch page" },
+    { id: "portfolio", title: "Portfolio", tag: "Case studies" },
+    { id: "saas-landing", title: "SaaS Landing", tag: "Conversion focused" },
+    { id: "mobile-app-site", title: "Mobile App Site", tag: "Feature highlights" },
+    { id: "agency-site", title: "Agency Site", tag: "Services + blog" },
+    { id: "docs", title: "Docs", tag: "Knowledge base" },
   ];
+  
   return (
     <Section id="work" className="py-20">
       <div className="flex flex-col items-center gap-6 relative z-10">
@@ -228,7 +253,9 @@ const Work = () => {
         <p className="text-gray-600 mt-2">A mix of product sites and creative experiments.</p>
       </div>
       <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-10">
-        {projects.map((p, i) => (<ProjectCard key={p.title} title={p.title} tag={p.tag} i={i} />))}
+        {projects.map((p, i) => (
+          <ProjectCard key={p.id} id={p.id} title={p.title} tag={p.tag} i={i} />
+        ))}
       </div>
     </Section>
   );
